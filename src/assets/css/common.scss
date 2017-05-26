@@ -1,0 +1,78 @@
+html {
+  font-size: 10px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff
+}
+
+ul, div, p, h1, img {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  -webkit-user-drag: none;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.clearfix {
+  display: inline-block;
+}
+
+html[xmlns] .clearfix {
+  display: block;
+}
+
+* html .clearfix {
+  height: 1%;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.radio-inline, .checkbox-inline {
+  display: inline-block;
+  padding-left: 20px;
+  margin-bottom: 0;
+  font-weight: 400;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.c-redio {
+  float: left;
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
+  background-image: url(./assets/images/icon-noActive-5e65d8987e.png);
+}
+
+label.active .c-redio {
+  background-image: url(./assets/images/icon-active-26882360f2.png);
+}
+.starUser {
+  display: block;
+  float: left;
+  width: 20px;
+  height: 20px;
+  background: url(./assets/images/userListIco-5c38f007fc.png) no-repeat 0px -26px;
+}
+
