@@ -108,7 +108,6 @@
           .width(iconHeight)
           .addClass(this.settings.iconColor)
           .css('backgroundColor', this.settings.iconBackgroundColor);
-        console.log( this.$el)
           this.$wrapper.append( this.$icon );
       }
 

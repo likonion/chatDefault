@@ -1,3 +1,5 @@
+<!--suppress ALL -->
+
 <template>
   <div class="boxwrapper">
     <section id="top-bar" class="top-bar">
@@ -10,19 +12,23 @@
     </section>
     <section class="main-wrapper clearfix">
       <leftnavigation></leftnavigation>
-      <section class="main-container">
+      <section class="main-container" v-if="user.acctiveUserIndex !== undefined">
         <!--消息显示窗口-->
-        <i class="chatContBg js-chatContBg " v-show="acctiveUserIndex === null"><!-- 选择访客开启对话--></i>
-        <section class="chatmain" v-if="acctiveUserIndex !== null">
+        <i class="chatContBg js-chatContBg " v-show="user.acctiveUserIndex === null"><!-- 选择访客开启对话--></i>
+        <section class="chatmain" v-if="user.acctiveUserIndex !== null">
           <header class="chat-detail-header">
             <div class="addButton ">
-              <a href="javascript:;" class=" goOut addstar " @click="starToggle" v-show="!currentStar"><i
+              <a href="javascript:;" class=" goOut addstar " @click="starToggle"
+                 v-show="!user.item[user.acctiveUserIndex].star"><i
                 class="fa fa-star-o"></i>星标 </a>
-              <a href="javascript:;" class=" goOut deldestar hide" @click="starToggle" v-show="currentStar"><i
+              <a href="javascript:;" class=" goOut deldestar hide" @click="starToggle"
+                 v-show="user.item[user.acctiveUserIndex].star"><i
                 class="fa fa-star"></i>已标记 </a>
-              <a href="javascript:;" class=" goOut addblack " @click="blacklistToggle" v-show="!currentBlacklist"><i
+              <a href="javascript:;" class=" goOut addblack " @click="blacklistToggle"
+                 v-show="!user.item[user.acctiveUserIndex].blacklist"><i
                 class="fa fa-minus-circle"></i>拉黑 </a>
-              <a href="javascript:;" class=" goOut delblack hide " @click="blacklistToggle" v-show="currentBlacklist"><i
+              <a href="javascript:;" class=" goOut delblack hide " @click="blacklistToggle"
+                 v-show="user.item[user.acctiveUserIndex].blacklist"><i
                 class="fa fa-minus-circle"></i>解除拉黑 </a>
             </div>
           </header>
@@ -37,13 +43,13 @@
                 </p>
               </div>
               <div class="systeamTextBox"><p class="systeamText">用户转人工服务 12:41:40</p></div>
-              <div v-for="msg in currentUserMsg">
+              <div v-for="msg in user.item[user.acctiveUserIndex].chat">
                 <div class="msg userCus clearfix" v-if="msg.type==='oneself'">
                   <div class="msg_user fl">
                     <img src="./assets/img/pcType.png" class="msg_user_img">
                   </div>
                   <div class="msgContBox fl">
-                    <span class="msg_time ml">{{currentUser}}</span>
+                    <span class="msg_time ml">{{user.item[user.acctiveUserIndex].name}}</span>
                     <span class="msg_time" style="margin-left: 0px;">{{msg.time}}</span>
                     <div style="clear:both;"></div>
                     <div class="msgBg fl" style="display: inline-flex;margin: 0px;max-width: 100%">
@@ -62,7 +68,7 @@
                     <div style="clear:both;"></div>
                     <div class="msgBg" style="display: inline-flex;float: right;margin: 0px;max-width: 92%;"><i
                       class="angleRight"></i>
-                      <div class="msg_content">{{msg.txt}}</div>
+                      <div class="msg_content" v-html="msg.txt"></div>
                     </div>
                   </div>
                 </div>
@@ -75,13 +81,14 @@
             <p class="userTextNow"></p>
 
             <textarea id="js-sendMessage" contenteditable="true"
-                 class="animatedTextArea form-control msg-send-input sendMessage zc-scroll"
-                 placeholder="请输入.." style="resize: none;max-height: 54px" @keypress.enter="sendMsg"
-                 @keyup="writeMsg"></textarea>
+                      class="animatedTextArea form-control msg-send-input sendMessage zc-scroll"
+                      placeholder="请输入.." style="resize: none;max-height: 54px" @keypress.enter="sendMsg"
+                      v-model="msgTxt"></textarea>
             <div>
               <div class="tipNosend" style="display: none;"><p>内容上限1024字符，已超出0字符</p></div>
               <div class="tipArea"><p class="enterTip">按下ctrl+enter换行</p>
-                <button class="btnSend " type="button" :class="{btnSendNoEable:sendBtn}">发送</button>
+                <button class="btnSend " type="button" :class="{btnSendNoEable:msgTxt===''}" @click="sendMsg">发送
+                </button>
               </div>
             </div>
           </div>
@@ -98,71 +105,22 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import leftnavigation from './components/leftnavigation.vue'
 import sideinfo from './components/sideinfo.vue'
-import "assets/emoji-css/jquery.emojipicker.css"
-import $ from 'jquery'
-import "assets/emoji-js/jquery.emojipicker.js"
 
-import "assets/emoji-css/jquery.emojipicker.a.css"
-import "assets/emoji-js/jquery.emojis.js"
-$(function () {
-
-})
 
 export default {
   data() {
     return {
       dropMenuShow: false,
-      sendBtn: true
+      msgTxt: ''
     }
   },
-  mounted: function () {
-    this.$nextTick(function () {
-      setTimeout(() => {
-        $('#js-sendMessage').emojiPicker({
-          height: '200'
-        })
-
-        console.log(jQuery('#input-default'))
-
-      }, 3000)
-//      $('#input-default').emojiPicker()
-      // 代码保证 this.$el 在 document 中
-//      $('#input-default').EmojiPicker();
-    })
-  },
-  created() {
+  created()
+  {
     this.$store.commit('getData')
   },
   computed: {
-    user () {
-      if (this.$store.state.user.length !== 0) {
-        return this.$store.state.user.item
-      }
-    },
-    acctiveUserIndex () {
-      return this.$store.state.user.acctiveUserIndex
-    },
-    currentUser () {
-      if (this.$store.state.user.length !== 0) {
-        return this.$store.state.user.item[this.$store.state.user.acctiveUserIndex].name
-      }
-    },
-    currentStar () {
-      if (this.$store.state.user.length !== 0) {
-        return this.$store.state.user.item[this.$store.state.user.acctiveUserIndex].star
-      }
-    },
-    currentBlacklist () {
-      if (this.$store.state.user.length !== 0) {
-        return this.$store.state.user.item[this.$store.state.user.acctiveUserIndex].blacklist
-      }
-    },
-    currentUserMsg () {
-      if (this.$store.state.user.length !== 0) {
-        if (this.$store.state.user.acctiveUserIndex !== null) {
-          return this.$store.state.user.item[this.$store.state.user.acctiveUserIndex].chat
-        }
-      }
+    user() {
+      return this.$store.state.user
     }
   },
   components: {
@@ -170,28 +128,26 @@ export default {
     'sideinfo': sideinfo
   },
   methods: {
-    starToggle () { // 星标开关
+    starToggle() { // 星标开关
       this.$store.commit('starToggle')
     },
-    blacklistToggle () {
+    blacklistToggle() {
       this.$store.commit('blacklistToggle')
     },
-    sendMsg (e) {
-      let msg = e.srcElement.value
-      e.srcElement.value = ''
-      e.preventDefault() // 阻止默认行为 阻止回车键换行使用keypress
-      let scrollBoxParent = document.getElementById('scrollBoxParent')
-      this.$store.commit('sendMsg', {msg})
-      this.$nextTick(() => {
-        // 滚动到底部
-        scrollBoxParent.scrollTop = scrollBoxParent.scrollHeight
-      })
-    },
-    writeMsg (e) {
-      if (e.srcElement.value === '') {
-        this.sendBtn = true
+    sendMsg(e) {
+      if (e.ctrlKey) {
+        this.msgTxt +=  '\r\n'
       } else {
-        this.sendBtn = false
+        let msg0 = this.msgTxt.replace("\n", "<br />")
+        let msg = msg0.replace("\r", "<br />");
+        this.msgTxt = ''
+        e.preventDefault() // 阻止默认行为 阻止回车键换行使用keypress
+        let scrollBoxParent = document.getElementById('scrollBoxParent')
+        this.$store.commit('sendMsg', {msg})
+        this.$nextTick(() => {
+          // 滚动到底部
+          scrollBoxParent.scrollTop = scrollBoxParent.scrollHeight
+        })
       }
     }
   }

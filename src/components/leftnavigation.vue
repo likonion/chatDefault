@@ -135,6 +135,12 @@
 </template>
 
 <script>
+  // 加载jquery.emojis控件
+  import "assets/emoji-css/jquery.emojipicker.css"
+  import $ from 'jquery'
+  import "assets/emoji-js/jquery.emojipicker.js"
+  import "assets/emoji-css/jquery.emojipicker.a.css"
+  import "assets/emoji-js/jquery.emojis.js"
   export default {
     data () {
       return {
@@ -168,6 +174,7 @@
         }
       },
       setCurrentMsg (index) {
+
         this.activeLiIndex = index
         this.$store.commit('acctiveUser', {index})
         this.$store.commit('clearNoread', {index})
@@ -175,6 +182,10 @@
           // v-for渲染已经完成
           let scrollBoxParent = document.getElementById('scrollBoxParent')
           scrollBoxParent.scrollTop = scrollBoxParent.scrollHeight
+          // 触发jquery.emojis控件
+          $('#js-sendMessage').emojiPicker({
+            height: '200'
+          })
         })
 
       }
