@@ -1,4 +1,5 @@
 <template>
+
   <section class="left-navigation">
     <header class="dropdown">
       <div class="user_menu" @click="dropMenuShow = !dropMenuShow">
@@ -24,7 +25,7 @@
       </div>
       <div id="admin_Invite" class="joinBox-yy ">
         <a href="javascript:;" class="openOtherUser"><i></i></a>
-        <div class="waitNum">
+        <div class="waitnum">
           <span>邀请新用户</span>
         </div>
       </div>
@@ -356,7 +357,7 @@
         left: 182px;
         top: 27px;
         float: right;
-        .waitNum {
+        .waitnum {
           display: inline-block;
           cursor: pointer;
           font-size: 12px;

@@ -23,7 +23,7 @@
             <dd><span>终端：</span> Google Chrome</dd>
             <dd><span>系 统：</span> 未知</dd>
             <dt>用户信息</dt>
-            <dd><span>昵称：</span><input type="text" value="福建厦门用户"></dd>
+            <dd><span>昵称：</span><input type="text" v-model="this.$store.state.user.item[this.$store.state.user.acctiveUserIndex].name" ></dd>
             <dd><span>姓名：</span><input type="text" value="-"></dd>
             <dd><span>来源：</span>桌面网站</dd>
             <dd><span>电话：</span><input type="text" value="-"></dd>
