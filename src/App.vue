@@ -12,10 +12,10 @@
     </section>
     <section class="main-wrapper clearfix">
       <leftnavigation></leftnavigation>
-      <section class="main-container" v-if="user.acctiveUserIndex !== undefined">
+      <section class="main-container">
         <!--消息显示窗口-->
-        <i class="chatContBg js-chatContBg " v-show="user.acctiveUserIndex === null"><!-- 选择访客开启对话--></i>
-        <section class="chatmain" v-if="user.acctiveUserIndex !== null">
+        <i class="chatContBg js-chatContBg " v-show="user.length===0 || user.acctiveUserIndex === null"><!-- 选择访客开启对话--></i>
+        <section class="chatmain" v-if="user.length!==0 && user.acctiveUserIndex !== null">
           <header class="chat-detail-header">
             <div class="addButton ">
               <a href="javascript:;" class=" goOut addstar " @click="starToggle"

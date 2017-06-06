@@ -51,17 +51,18 @@ Object.keys(proxyTable).forEach(function (context) {
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
 
-var app = express()
-var appData = require('../data.json')
-var user = appData.user;
-var apiRoutes = express.Router()
-apiRoutes.get('/user',function (req, res) {
-  res.json({
-    errno: 0,
-    data: user
-  })
-})
-app.use('/api',apiRoutes)
+// 模拟接口
+// var app = express()
+// var appData = require('../data.json')
+// var user = appData.user;
+// var apiRoutes = express.Router()
+// apiRoutes.get('/user',function (req, res) {
+//   res.json({
+//     errno: 0,
+//     data: user
+//   })
+// })
+// app.use('/api',apiRoutes)
 
 // serve webpack bundle output
 app.use(devMiddleware)

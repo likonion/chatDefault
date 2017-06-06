@@ -5,9 +5,18 @@ export const state = {
 }
 export const mutations = {
   getData (state) {
-    axios.get('/api/user').then(function (resolve) {
-      state.user = resolve.data.data
+
+    axios.get('static/data.json').then(function (resolve) {
+      state.user = resolve.data.user
+    }).catch( (err) => {
+      console.log(err);
     })
+
+    // axios.get('/api/user').then(function (resolve) {
+    //   state.user = resolve.data.data
+    // }).catch( (err) => {
+    //   console.log(err);
+    // })
   },
   acctiveUser (state, {index}) { // 当前点击的用户索引
     state.user.acctiveUserIndex = index
