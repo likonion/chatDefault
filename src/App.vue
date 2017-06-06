@@ -33,6 +33,7 @@
             </div>
           </header>
           <div class="scrollBoxParent" id="scrollBoxParent">
+
             <div class="scrollBox">
               <div class="systeamTextBox js-zc-loadmore"><p class="systeamText loadmore">点击加载更多</p></div>
               <div class="day_divider">
@@ -43,37 +44,40 @@
                 </p>
               </div>
               <div class="systeamTextBox"><p class="systeamText">用户转人工服务 12:41:40</p></div>
-              <div v-for="msg in user.item[user.acctiveUserIndex].chat">
-                <div class="msg userCus clearfix" v-if="msg.type==='oneself'">
-                  <div class="msg_user fl">
-                    <img src="./assets/img/pcType.png" class="msg_user_img">
+              <transition-group name="list" tag="div">
+                <div v-for="msg in user.item[user.acctiveUserIndex].chat" v-bind:key="msg">
+                  <div class="msg userCus clearfix" v-if="msg.type==='oneself'">
+                    <div class="msg_user fl">
+                      <img src="./assets/img/pcType.png" class="msg_user_img">
+                    </div>
+                    <div class="msgContBox fl">
+                      <span class="msg_time ml">{{user.item[user.acctiveUserIndex].name}}</span>
+                      <span class="msg_time" style="margin-left: 0px;">{{msg.time}}</span>
+                      <div style="clear:both;"></div>
+                      <div class="msgBg fl" style="display: inline-flex;margin: 0px;max-width: 100%">
+                        <i class="angleLeft"></i>
+                        <div class="msg_content formUser">{{msg.txt}}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="msgContBox fl">
-                    <span class="msg_time ml">{{user.item[user.acctiveUserIndex].name}}</span>
-                    <span class="msg_time" style="margin-left: 0px;">{{msg.time}}</span>
-                    <div style="clear:both;"></div>
-                    <div class="msgBg fl" style="display: inline-flex;margin: 0px;max-width: 100%">
-                      <i class="angleLeft"></i>
-                      <div class="msg_content formUser">{{msg.txt}}</div>
+                  <div class="msg workOrderCus clearfix" v-else>
+                    <div class="msg_user fr">
+                      <img src="./assets/img/admin.png" class="msg_user_img">
+                    </div>
+                    <div class="msgContBox fr">
+                      <span class="msg_time">vincent</span>
+                      <span class="msg_time">{{msg.time}}</span>
+                      <div style="clear:both;"></div>
+                      <div class="msgBg" style="display: inline-flex;float: right;margin: 0px;max-width: 92%;"><i
+                        class="angleRight"></i>
+                        <div class="msg_content" v-html="msg.txt"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="msg workOrderCus clearfix" v-else>
-                  <div class="msg_user fr">
-                    <img src="./assets/img/admin.png" class="msg_user_img">
-                  </div>
-                  <div class="msgContBox fr">
-                    <span class="msg_time">vincent</span>
-                    <span class="msg_time">{{msg.time}}</span>
-                    <div style="clear:both;"></div>
-                    <div class="msgBg" style="display: inline-flex;float: right;margin: 0px;max-width: 92%;"><i
-                      class="angleRight"></i>
-                      <div class="msg_content" v-html="msg.txt"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </transition-group>
             </div>
+
           </div>
           <!--消息发送框-->
           <div class="botTextBox">
@@ -136,12 +140,15 @@ export default {
     },
     sendMsg(e) {
       if (e.ctrlKey) {
-        this.msgTxt +=  '\r\n'
+        this.msgTxt += '\n'
       } else {
-        let msg0 = this.msgTxt.replace("\n", "<br />")
-        let msg = msg0.replace("\r", "<br />");
-        this.msgTxt = ''
+        let msg = this.msgTxt.replace(/\n/g, "<br />")
         e.preventDefault() // 阻止默认行为 阻止回车键换行使用keypress
+        if (this.msgTxt === '') {
+          return
+        } else {
+          this.msgTxt = ''
+        }
         let scrollBoxParent = document.getElementById('scrollBoxParent')
         this.$store.commit('sendMsg', {msg})
         this.$nextTick(() => {
@@ -269,6 +276,13 @@ export default {
           background-color: #f7fafa;
           .scrollBox {
             padding: 30px;
+            .list-enter-active {
+              transition: all .5s ease-in;
+            }
+            .list-enter {
+              transform: translateY(-10px);
+              opacity: 0;
+            }
             .msg {
               clear: both;
               margin: 20px 0;
@@ -442,6 +456,8 @@ export default {
           border-top: 1px solid #e6eeec;
           outline: none;
           display: block;
+          padding-left: 20px;
+
           .faceButton {
             position: absolute;
             left: 20px;
@@ -499,10 +515,12 @@ export default {
             }
           }
           .msg-send-input {
+            width: 100%;
             padding: 10px;
             background-color: #f7fafa;
             margin-top: 45px;
             min-height: 50px;
+            margin-left: -20px;
             resize: none;
             outline: none;
             border: 0;

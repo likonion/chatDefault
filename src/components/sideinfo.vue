@@ -2,15 +2,17 @@
   <div class="sideinfo">
     <ul class="tabmenu clearfix">
       <li :class="{active: tabIndex === 1}" @click="sideTab(1)"><i class="fa fa-user1"></i><br><span>用户资料</span></li>
-      <li :class="{active: tabIndex === 2}" @click="sideTab(2)"><i class="glyphicon glyphicon-comment1"></i><br><span>快捷回复</span></li>
-      <li :class="{active: tabIndex === 3}" @click="sideTab(3)"><i class="fa fa-comments-o1"></i><br><span>智能回复</span></li>
+      <li :class="{active: tabIndex === 2}" @click="sideTab(2)"><i class="glyphicon glyphicon-comment1"></i><br><span>快捷回复</span>
+      </li>
+      <li :class="{active: tabIndex === 3}" @click="sideTab(3)"><i class="fa fa-comments-o1"></i><br><span>智能回复</span>
+      </li>
     </ul>
     <ul class="tabcontent">
       <li v-show="tabIndex === 1">
         <div class="nullcon" v-show="this.$store.state.user.acctiveUserIndex===null">
           <i class=" tab-profilebg"></i>
         </div>
-        <div v-show="this.$store.state.user.acctiveUserIndex!==null">
+        <div v-if="this.$store.state.user.acctiveUserIndex!==null">
           <dl>
             <dt>访问信息</dt>
             <dd><span>访问来源：</span>--</dd>
@@ -23,16 +25,17 @@
             <dd><span>终端：</span> Google Chrome</dd>
             <dd><span>系 统：</span> 未知</dd>
             <dt>用户信息</dt>
-            <dd><span>昵称：</span><input type="text" v-model="this.$store.state.user.item[this.$store.state.user.acctiveUserIndex].name" ></dd>
-            <dd><span>姓名：</span><input type="text" value="-"></dd>
+            <dd><span>昵称：</span><input type="text">
+            </dd>
+            <dd><span>姓名：</span><input type="text" v-if="user.item !== undefined" v-model="user.item[user.acctiveUserIndex].name"></dd>
             <dd><span>来源：</span>桌面网站</dd>
             <dd><span>电话：</span><input type="text" value="-"></dd>
           </dl>
           <p class="saveCustomerInfo js-saveCustomerInfo">保存客户信息</p>
         </div>
       </li>
-      <li  v-show="tabIndex === 2">快捷回复</li>
-      <li  v-show="tabIndex === 3">智能回复</li>
+      <li v-show="tabIndex === 2">快捷回复</li>
+      <li v-show="tabIndex === 3">智能回复</li>
     </ul>
   </div>
 </template>
@@ -43,6 +46,14 @@
       return {
         tabIndex: 1,
         tabIf: false
+      }
+    },
+    computed: {
+      user() {
+        return this.$store.state.user
+      },
+      test() {
+          return this.user.item.length
       }
     },
     methods: {

@@ -137,11 +137,11 @@
 
 <script>
   // 加载jquery.emojis控件
-  import "assets/emoji-css/jquery.emojipicker.css"
-  import $ from 'jquery'
-  import "assets/emoji-js/jquery.emojipicker.js"
-  import "assets/emoji-css/jquery.emojipicker.a.css"
-  import "assets/emoji-js/jquery.emojis.js"
+//  import "assets/emoji-css/jquery.emojipicker.css"
+//  import $ from 'jquery'
+//  import "assets/emoji-js/jquery.emojipicker.js"
+//  import "assets/emoji-css/jquery.emojipicker.a.css"
+//  import "assets/emoji-js/jquery.emojis.js"
   export default {
     data () {
       return {
@@ -184,9 +184,9 @@
           let scrollBoxParent = document.getElementById('scrollBoxParent')
           scrollBoxParent.scrollTop = scrollBoxParent.scrollHeight
           // 触发jquery.emojis控件
-          $('#js-sendMessage').emojiPicker({
-            height: '200'
-          })
+//          $('#js-sendMessage').emojiPicker({
+//            height: '200'
+//          })
         })
 
       }

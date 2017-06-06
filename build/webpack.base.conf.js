@@ -2,7 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
-var webpack = require("webpack") // 在开头引入webpack，后面的plugins那里需要
+// var webpack = require("webpack") // 在开头引入webpack，后面的plugins那里需要
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -30,7 +30,7 @@ module.exports = {
       // webpack 使用 jQuery，如果是自行下载的
       // 'jquery': path.resolve(__dirname, '../src/assets/libs/jquery/jquery.min'),
       // 如果使用NPM安装的jQuery
-      'jquery': 'jquery'
+      // 'jquery': 'jquery'
     }
   },
   module: {
@@ -71,15 +71,16 @@ module.exports = {
         }
       }
     ]
-  },
-  plugins: [
-    // 配置全局使用 jquery
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      jquery: "jquery",
-      "window.jQuery": "jquery"
-    })
-  ]
+  }
+  // ,
+  // plugins: [
+  //   // 配置全局使用 jquery
+  //   new webpack.optimize.CommonsChunkPlugin('common.js'),
+  //   new webpack.ProvidePlugin({
+  //     $: "jquery",
+  //     jQuery: "jquery",
+  //     jquery: "jquery",
+  //     "window.jQuery": "jquery"
+  //   })
+  // ]
 }
