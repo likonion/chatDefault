@@ -75,7 +75,7 @@
       border-bottom: 1px solid #e0e8e8;
       li {
         float: left;
-        width: 95px;
+        width: 94px;
         cursor: pointer;
         font-size: 13px;
         color: #a4b2b3;

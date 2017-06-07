@@ -1,5 +1,10 @@
 {
   "user": {
+    "state": {
+      "online": true,
+      "busy": false,
+      "offline": false
+    },
     "acctiveUserIndex": null,
     "item": [
       {

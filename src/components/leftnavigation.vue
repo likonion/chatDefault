@@ -5,25 +5,25 @@
       <div class="user_menu" @click="dropMenuShow = !dropMenuShow">
         <div class="menuDropdown ">
           <div class="current_user_avatar">
-            <img class="member_image thumb_48 logo "
-                 src="../assets/admin.png" id="mylogo">
+            <img class="member_image thumb_48 logo " src="../assets/admin.png" id="mylogo">
           </div>
           <span class="current_user_name" title="vincent">vincent</span>
-          <i class="connection_icon  online"></i>
+          <i v-if="this.$store.state.user.length!==0" class="connection_icon"
+             :class="{online:userState.online,busy:userState.busy,offline:userState.offline}"></i>
           <span class="connection_style">超级管理员</span>
           <span id="connection_status" style="display:none">离线</span>
         </div>
         <transition name="dropdownMenu">
           <div v-show="dropMenuShow" class="dropdown-menu dropdown-menu-right menu status-user ">
             <ul>
-              <li class=""><span class="user-icon-online">在线</span></li>
-              <li class=""><span class="user-icon-busy">忙碌</span></li>
-              <li class=""><span class="user-icon-offine">离线</span></li>
+              <li @click="setUserState(1)"><span class="user-icon-online">在线</span></li>
+              <li @click="setUserState(2)"><span class="user-icon-busy">忙碌</span></li>
+              <li @click="setUserState(3)"><span class="user-icon-offine">离线</span></li>
             </ul>
           </div>
         </transition>
       </div>
-      <div id="admin_Invite" class="joinBox-yy ">
+      <div class="joinBox-yy " @click="openDialog('invitation')">
         <a href="javascript:;" class="openOtherUser"><i></i></a>
         <div class="waitnum">
           <span>邀请新用户</span>
@@ -137,11 +137,11 @@
 
 <script>
   // 加载jquery.emojis控件
-//  import "assets/emoji-css/jquery.emojipicker.css"
-//  import $ from 'jquery'
-//  import "assets/emoji-js/jquery.emojipicker.js"
-//  import "assets/emoji-css/jquery.emojipicker.a.css"
-//  import "assets/emoji-js/jquery.emojis.js"
+  //  import "assets/emoji-css/jquery.emojipicker.css"
+  //  import $ from 'jquery'
+  //  import "assets/emoji-js/jquery.emojipicker.js"
+  //  import "assets/emoji-css/jquery.emojipicker.a.css"
+  //  import "assets/emoji-js/jquery.emojis.js"
   export default {
     data () {
       return {
@@ -153,12 +153,18 @@
     },
     computed: {
       user () {
-        if (this.$store.state.user.length !== 0) {
-          return this.$store.state.user.item
-        }
+        return this.$store.state.user.item
+      },
+      userState () {
+          return this.$store.state.user.state
       }
+
     },
     methods: {
+      setUserState (index) {
+        // 设置用户状态
+        this.$store.commit('setUserState',{index})
+      },
       leftNav (num) {
         this.tabIndex = num
       },
@@ -189,6 +195,9 @@
 //          })
         })
 
+      },
+      openDialog (model) {
+          this.$store.commit('dialogSwitch',{model})
       }
     }
   }
@@ -207,7 +216,7 @@
       background: #f2f7f7;
       position: relative;
       border-bottom: 1px solid #e0e8e8;
-      z-index: 9999;
+      z-index: 999;
       .user_menu {
         position: absolute;
         top: 0;
@@ -229,9 +238,7 @@
           height: 40px;
           margin: 0;
           position: relative;
-          i.connection_icon.online {
-            background-image: url("../assets/img/online-afd4b65201.png");
-          }
+
           .connection_style {
             position: absolute;
             left: 53px;
@@ -272,6 +279,15 @@
             position: absolute;
             top: 30px;
             left: 30px;
+          }
+          > .online {
+            background-image: url("../assets/img/online-afd4b65201.png");
+          }
+          > .busy {
+            background-image: url("../assets/img/busy-993c8f0f60.png");
+          }
+          > .offline {
+            background-image: url("../assets/img/offline-d2a9280121.png");
           }
         }
         .dropdownMenu-enter-active {
