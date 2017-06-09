@@ -42,7 +42,7 @@
             class="reaRefBtn " href="javascript:;"><span class="refresh"></span>刷新</a></div>
           <div style="clear:both"></div>
         </div>
-        <div class="queueTableWrapper" v-show="userQueue.item.length!==0">
+        <div class="queueTableWrapper" v-show="userQueue.item ? userQueue.item.length !==0 : false">
           <table class="reqTableTh queueTable">
             <thead>
             <tr>
@@ -62,8 +62,8 @@
               <td>{{item.note}}</td>
               <td>{{item.waitTime}}</td>
               <td>
-                <button class="btnSend" type="button" @click="addUser(index)">邀请</button>
-                <button class="btnSend" type="button" @click="removeUser(index)">拒绝</button>
+                <button class="invitation" type="button" @click="addUser(index)">邀请</button>
+                <button class="refuse" type="button" @click="removeUser(index)">拒绝</button>
               </td>
             </tr>
             </tbody>
@@ -71,16 +71,16 @@
         </div>
         <div>
           <div class=" table-outer zc-scroll">
-            <div class="noUser" v-if="userQueue.item.length===0"><p>暂无用户</p></div>
+            <div class="noUser" v-if="userQueue.item ? userQueue.item.length===0 : true"><p>暂无用户</p></div>
             <table class="table table-bottomless ls-animated-table queueTable">
               <tbody class="reqDomBox"></tbody>
             </table>
             <div class="queueLoading" style="display: none;"><span></span></div>
           </div>
           <div class="reqBottom clear spec">
-            <div class="fl"><p style="float:left"> 显示 <span class="countPage ">0</span>/<span
-              class="allCountPage -page">0</span> 页 </p>
-              <p style="float:left;margin-left:8px;"> 总共 <span class="countSize ">0</span> 条 </p></div>
+            <div class="fl"><p style="float:left"> 显示 <span class="countPage ">7</span>/<span
+              class="allCountPage -page">1</span> 页 </p>
+              <p style="float:left;margin-left:8px;"> 总共 <span class="countSize ">{{userQueue.item?userQueue.item.length :0}}</span> 条 </p></div>
             <div class="fr">
               <!--<a class="reqFirstBtn" href="javascript:;">首页 </a> <span class="allCountPageBox hide">                         <a class="goCountPage" href="javascript:;">0</a></span> -->
               <a class="reaPrevBtn " href="#">&lt;上一页</a>
@@ -186,9 +186,11 @@
 
       }
       .queueTableWrapper {
-        height: 260px;
+        height: 270px;
+        overflow: hidden;
         .queueTable {
           border-collapse: collapse;
+          width: 100%;
           thead {
             tr {
               th {
@@ -237,7 +239,24 @@
             tr {
               td {
                 white-space: nowrap;
+
                 button {
+                  border: 0;
+                  border-radius: 3px;
+                  font-size: 12px;
+                  cursor: pointer;
+                  padding: 6px;
+                  color: white;
+                  outline: none;
+                  &.invitation {
+                    background-color: #09aeaf;
+                  }
+                  &.refuse {
+                    background-color: #d30000;
+                  }
+                  &:hover {
+                    font-weight: 700;
+                  }
                 }
               }
             }
