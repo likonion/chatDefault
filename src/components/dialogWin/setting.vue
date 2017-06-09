@@ -9,14 +9,20 @@
       <div class="sessionList"><p class="title">当前会话</p>
         <div class="sortStyle"><p class="sortStyletitle">排序方式：</p>
           <div class="innerArea">
-            <div class="accessOrder optionActive" ><i class="option"></i>
+            <div class="accessOrder" :class="{optionActive:clickSort==='accessOrder'}" @click="sortBy('accessOrder')">
+              <i class="option"></i>
               <p class="orderTxt">按接入顺序</p>
-              <p class="orderdetail">新接入的用户在列表上方，用户发来信息后列表排序不会改变</p></div>
-            <div class="msgTime"><i class="option"></i>
+              <p class="orderdetail">新接入的用户在列表上方，用户发来信息后列表排序不会改变</p>
+            </div>
+            <div class="msgTime" :class="{optionActive:clickSort==='msgTime'}" @click="sortBy('msgTime')">
+              <i class="option"></i>
               <p class="orderTxt">按新消息时间</p>
-              <p class="orderdetail">用户发来新消息后自动移动到列表上方</p></div>
-            <div class="starTop starTopActive"><i class="starTopCheckBox"></i>
-              <p class="orderTxt">星标用户在当前会话列表置顶</p></div>
+              <p class="orderdetail">用户发来新消息后自动移动到列表上方</p>
+            </div>
+            <div class="starTop" :class="{starTopActive:starTopActive}" @click="starTopActive=!starTopActive">
+              <i class="starTopCheckBox"></i>
+              <p class="orderTxt">星标用户在当前会话列表置顶</p>
+            </div>
           </div>
         </div>
       </div>
@@ -24,7 +30,21 @@
   </div>
 </template>
 
-<script></script>
+<script>
+  export default {
+    data () {
+      return {
+        clickSort: 'accessOrder',
+        starTopActive: false
+      }
+    },
+    methods: {
+      sortBy (m) {
+        this.clickSort = m
+      }
+    }
+  }
+</script>
 
 <style lang="scss">
   .modal-alert-content {

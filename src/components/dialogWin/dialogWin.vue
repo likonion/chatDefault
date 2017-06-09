@@ -1,5 +1,6 @@
 <template>
   <div class="zc-shadow-layer" id="dialogWin">
+    <!--begin-->
     <div class="bootbox">
       <div class="modal-dialog">
         <div class="modal-content">

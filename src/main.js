@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import store from './vuex/store'
 import router from './router'
+import dialogWin from './components/dialogWin/dialogWin.vue'
 
 
 Vue.config.productionTip = false
@@ -15,4 +16,11 @@ new Vue({
   store,
   template: '<App/>',
   components: {App}
+})
+new Vue({
+  el: '#dialog',
+  router,
+  store,
+  template: '<dialogWin v-show="this.$store.state.dialog.show" />',
+  components: {dialogWin}
 })

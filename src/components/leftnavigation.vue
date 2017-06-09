@@ -43,7 +43,7 @@
         <i class=" onlineBg"></i>
         <p class="onoffTip ">在线</p>
         <ul class="users">
-          <li class="user-list-item online" :class="{'active':index===activeLiIndex}" v-for="(item,index) in user"
+          <li class="user-list-item online" :class="{'active':index===user.acctiveUserIndex}" v-for="(item,index) in userItem"
               v-if="item.online"
               @click="setCurrentMsg(index)">
             <i class="icon laptop  ">
@@ -65,10 +65,10 @@
         </ul>
         <p class="onoffTip ">离线</p>
         <ul id="offlineUser" class="user">
-          <li class="user-list-item ofline" :class="{'active':index===activeLiIndex}" v-for="(item,index) in user"
+          <li class="user-list-item" :class="{'active':index===user.acctiveUserIndex}" v-for="(item,index) in userItem"
               v-if="!item.online"
               @click="setCurrentMsg(index)">
-            <i class="icon laptop  ">
+            <i class="icon laptop  offline">
               <span class="badge badge-red " v-if="item.noread!=0"
                     style="padding: 2px 5px; visibility: visible;">{{item.noread}}</span>
             </i>
@@ -104,9 +104,9 @@
         </div>
         <div id="historylist" class="leftScroll zc-scroll">
           <ul class="history-list">
-            <li class="user-list-item history" v-for="(item,index) in user" @click="setCurrentMsg(index)"
+            <li class="user-list-item history" v-for="(item,index) in userItem" @click="setCurrentMsg(index)"
                 v-show="needShow(item.star, item.blacklist)">
-              <i class="icon laptop  offline">
+              <i class="icon laptop " :class="{offline:!item.online}">
                 <span class="badge badge-red " style="padding:2px 5px">1</span>
               </i>
               <div class="item-detail">
@@ -147,13 +147,16 @@
       return {
         dropMenuShow: false,
         tabIndex: 1,
-        activeLiIndex: null,
         showIndex: 1
       }
     },
     computed: {
       user () {
-        return this.$store.state.user.item
+        if (!this.$store.state.user) return false
+        return this.$store.state.user
+      },
+      userItem () {
+        return this.user.item
       },
       userState () {
           return this.$store.state.user.state
@@ -182,7 +185,6 @@
       },
       setCurrentMsg (index) {
 
-        this.activeLiIndex = index
         this.$store.commit('acctiveUser', {index})
         this.$store.commit('clearNoread', {index})
         this.$nextTick(function () {
