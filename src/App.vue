@@ -14,9 +14,9 @@
       <leftnavigation></leftnavigation>
       <section class="main-container">
         <!--消息显示窗口-->
-        <i class="chatContBg js-chatContBg " v-show="user.length===0 || user.acctiveUserIndex === null">
+        <i class="chatContBg js-chatContBg " v-show="!user.item || user.acctiveUserIndex === null">
           <!-- 选择访客开启对话--></i>
-        <section class="chatmain" v-if="user.length!==0 && user.acctiveUserIndex !== null">
+        <section class="chatmain" v-if="user.item && user.acctiveUserIndex !== null">
           <header class="chat-detail-header">
             <div class="addButton ">
               <a href="javascript:;" class=" goOut addstar " @click="starToggle"
@@ -46,7 +46,7 @@
               </div>
               <div class="systeamTextBox"><p class="systeamText">用户转人工服务 12:41:40</p></div>
               <transition-group name="list" tag="div">
-                <div v-for="msg in user.item[user.acctiveUserIndex].chat" v-bind:key="msg">
+                <div v-if="user.item[user.acctiveUserIndex].chat!==0" v-for="msg in user.item[user.acctiveUserIndex].chat" v-bind:key="msg">
                   <div class="msg userCus clearfix" v-if="msg.type==='oneself'">
                     <div class="msg_user fl">
                       <img src="./assets/img/pcType.png" class="msg_user_img">

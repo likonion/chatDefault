@@ -38,13 +38,13 @@
                 class="cancelBtn ">取消</span></li>
             </ul>
           </div>
-          <div class="fr"><span class="reqRefNow">刷新于<span >11:51:32</span></span><a
+          <div class="fr"><span class="reqRefNow">刷新于<span>11:51:32</span></span><a
             class="reaRefBtn " href="javascript:;"><span class="refresh"></span>刷新</a></div>
           <div style="clear:both"></div>
         </div>
-        <div>
+        <div class="queueTableWrapper" v-show="userQueue.item.length!==0">
           <table class="reqTableTh queueTable">
-            <tbody>
+            <thead>
             <tr>
               <th class="th2">用户昵称</th>
               <th class="th3">来源</th>
@@ -53,12 +53,25 @@
               <th class="th6  ">等待时长<span class="sort " style="background-position: -393px 0px;"></span></th>
               <th class="th7">操作</th>
             </tr>
+            </thead>
+            <tbody>
+            <tr v-if="userQueue.item" v-for="(item,index) in userQueue.item">
+              <td>{{item.name}}</td>
+              <td>{{item.from}}</td>
+              <td>{{item.skill}}</td>
+              <td>{{item.note}}</td>
+              <td>{{item.waitTime}}</td>
+              <td>
+                <button class="btnSend" type="button" @click="addUser(index)">邀请</button>
+                <button class="btnSend" type="button" @click="removeUser(index)">拒绝</button>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>
         <div>
           <div class=" table-outer zc-scroll">
-            <div class="noUser"><p>暂无用户</p></div>
+            <div class="noUser" v-if="userQueue.item.length===0"><p>暂无用户</p></div>
             <table class="table table-bottomless ls-animated-table queueTable">
               <tbody class="reqDomBox"></tbody>
             </table>
@@ -82,7 +95,25 @@
   </div>
 </template>
 
-<script></script>
+<script>
+  export default {
+    computed: {
+      userQueue () {
+        return this.$store.state.userQueue
+      }
+    },
+    methods: {
+      // 添加队列中的用户到当前会话
+      addUser (index) {
+        this.$store.commit('addUser', {index})
+      },
+      // 删除队列中到用户
+      removeUser (index) {
+        this.$store.commit('removeUser', {index})
+      }
+    }
+  }
+</script>
 
 <style lang="scss">
   .bootbox-body {
@@ -96,7 +127,7 @@
           font-weight: bold;
           color: #9c9c9c;
         }
-        .reaPrevBtn,.reaNextBtn {
+        .reaPrevBtn, .reaNextBtn {
           display: block;
           float: left;
           width: 58px;
@@ -154,51 +185,67 @@
         }
 
       }
-      .queueTable {
-        tr {
-          th {
-            font-size: 14px;
-            font-weight: bold;
-            color: #555556;
-            text-align: left;
-          }
-          .th2 {
-            width: 20%;
-          }
-          .th3 {
-            width: 13%;
-          }
-          .th4 {
-            width: 14%;
-          }
-          .th5 {
-            width: 21%;
-          }
-          .th6 {
-            position: relative;
-            z-index: 10;
-            cursor: pointer;
-            width: 20%;
-            span {
-              position: absolute;
-              left: 58px;
-              top: 21px;
-              z-index: 20;
-              width: 17px;
-              height: 17px;
-              background: url(../../assets/images/investIco-9397e3e5bc.png) no-repeat -429px 0px;
+      .queueTableWrapper {
+        height: 260px;
+        .queueTable {
+          border-collapse: collapse;
+          thead {
+            tr {
+              th {
+                font-size: 14px;
+                font-weight: bold;
+                color: #555556;
+                text-align: left;
+                background-color: #dbdbdb;
+              }
+              .th2 {
+                width: 20%;
+              }
+              .th3 {
+                width: 13%;
+              }
+              .th4 {
+                width: 14%;
+              }
+              .th5 {
+                width: 21%;
+              }
+              .th6 {
+                position: relative;
+                z-index: 10;
+                cursor: pointer;
+                width: 20%;
+                span {
+                  position: absolute;
+                  left: 58px;
+                  top: 10px;
+                  z-index: 20;
+                  width: 17px;
+                  height: 17px;
+                  background: url(../../assets/images/investIco-9397e3e5bc.png) no-repeat -429px 0px;
+                }
+              }
+              .th7 {
+                width: 15%;
+              }
             }
           }
-          .th7 {
-            width: 15%;
+          tbody {
+            tr:nth-child(even) {
+              background-color: #f6f6f6;
+            }
+            tr {
+              td {
+                white-space: nowrap;
+                button {
+                }
+              }
+            }
+          }
+          td, th {
+            padding: 5px;
           }
         }
-      }
-      .reqTableTh {
-        width: 100%;
-        height: 52px;
-        font-family: 微软雅黑;
-        border-top: 1px solid rgb(204, 204, 204);
       }
       .noUser {
         width: 100%;

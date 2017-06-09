@@ -326,5 +326,99 @@
         ]
       }
     ]
+  },
+  "userQueue": {
+    "item": [
+      {
+        "name": "小A",
+        "from": "桌面网站",
+        "skill": "技能A",
+        "note": "咨询技能A",
+        "waitTime": "30",
+        "chat": [
+          {
+            "type": "oneself",
+            "date": "2016-4-4",
+            "time": "13:21:01",
+            "txt": "在吗？我想请问一个问题"
+          }
+        ]
+      },
+      {
+        "name": "小B",
+        "from": "移动网站",
+        "skill": "技能B",
+        "note": "咨询技能B",
+        "waitTime": "20",
+        "chat": [
+          {
+            "type": "oneself",
+            "date": "2016-4-4",
+            "time": "13:21:01",
+            "txt": "在吗？我想请问一个问题"
+          }
+        ]
+      },
+      {
+        "name": "小C",
+        "from": "APP",
+        "skill": "技能C",
+        "note": "咨询技能C",
+        "waitTime": "10",
+        "chat": [
+          {
+            "type": "oneself",
+            "date": "2016-4-4",
+            "time": "13:21:01",
+            "txt": "在吗？我想请问一个问题"
+          }
+        ]
+      },
+      {
+        "name": "小D",
+        "from": "微信",
+        "skill": "技能D",
+        "note": "咨询技能D",
+        "waitTime": "40",
+        "chat": [
+          {
+            "type": "oneself",
+            "date": "2016-4-4",
+            "time": "13:21:01",
+            "txt": "在吗？我想请问一个问题"
+          }
+        ]
+      },
+      {
+        "name": "小E",
+        "from": "第三方平台",
+        "skill": "技能E",
+        "note": "咨询技能E",
+        "waitTime": "50",
+        "chat": [
+          {
+            "type": "oneself",
+            "date": "2016-4-4",
+            "time": "13:21:01",
+            "txt": "在吗？我想请问一个问题"
+          }
+        ]
+      },
+      {
+        "name": "小F",
+        "from": "桌面网站",
+        "skill": "技能F",
+        "note": "咨询技能F",
+        "waitTime": "60",
+        "chat": [
+          {
+            "type": "oneself",
+            "date": "2016-4-4",
+            "time": "13:21:01",
+            "txt": "在吗？我想请问一个问题"
+          }
+        ]
+      }
+    ]
   }
 }

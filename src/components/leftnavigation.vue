@@ -8,7 +8,7 @@
             <img class="member_image thumb_48 logo " src="../assets/admin.png" id="mylogo">
           </div>
           <span class="current_user_name" title="vincent">vincent</span>
-          <i v-if="this.$store.state.user.length!==0" class="connection_icon"
+          <i v-if="userState" class="connection_icon"
              :class="{online:userState.online,busy:userState.busy,offline:userState.offline}"></i>
           <span class="connection_style">超级管理员</span>
           <span id="connection_status" style="display:none">离线</span>
@@ -52,7 +52,7 @@
             </i>
             <div class="item-detail">
               <div class="unameWidely"><span class="uname "> {{item.name}}</span></div>
-              <span class="chat-detail" :class="{orange:item.noread}">{{item.chat[item.chat.length - 1].txt}}</span>
+              <span class="chat-detail" :class="{orange:item.noread}" v-if="item.chat.length!==0">{{item.chat[item.chat.length - 1].txt}}</span>
               <div class="funIco">
                 <i class="starUser" v-show="item.star"></i>
               </div>
@@ -60,7 +60,7 @@
                 <span class="newIcon"></span>
               </i>
             </div>
-            <p class="receiveTime ">{{item.chat[item.chat.length - 1].time}}</p>
+            <p class="receiveTime " v-if="item.chat.length!==0">{{item.chat[item.chat.length - 1].time}}</p>
           </li>
         </ul>
         <p class="onoffTip ">离线</p>
@@ -74,7 +74,7 @@
             </i>
             <div class="item-detail">
               <div class="unameWidely"><span class="uname "> {{item.name}}</span></div>
-              <span class="chat-detail" :class="{orange:item.noread}">{{item.chat[item.chat.length - 1].txt}}</span>
+              <span class="chat-detail" :class="{orange:item.noread} "  v-if="item.chat.length!==0">{{item.chat[item.chat.length - 1].txt}}</span>
               <div class="funIco">
                 <i class="starUser" v-show="item.star"></i>
               </div>
@@ -82,7 +82,7 @@
                 <span class="newIcon"></span>
               </i>
             </div>
-            <p class="receiveTime ">{{item.chat[item.chat.length - 1].time}}</p>
+            <p class="receiveTime " v-if="item.chat.length!==0">{{item.chat[item.chat.length - 1].time}}</p>
           </li>
         </ul>
       </div>
@@ -124,7 +124,7 @@
                   <span class="newIcon"></span>
                 </i>
               </div>
-              <p class="receiveTime ">{{item.chat[item.chat.length - 1].time}}</p></li>
+              <p class="receiveTime "  v-if="item.chat.length!==0">{{item.chat[item.chat.length - 1].time}}</p></li>
           </ul>
         </div>
       </div>
