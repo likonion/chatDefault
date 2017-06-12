@@ -4,45 +4,47 @@
       <div class="reqMenuBox clear">
         <div class="fl">
           <button class="ls-light-green-btn active"> 排队中 <span
-            class="waitSize  ">0</span></button>
+            class="waitSize">{{userQueueLength}}</span></button>
         </div>
       </div>
       <div>
         <div class="screen-condition">
-          <div class="fl"><span class="condition  "><span class="sourcevalue">所有来源</span><span
-            class="ico" style="background-position: 3px 0px;"></span></span> <span
-            class="condition  "><span class="techvalue">所有技能组</span><span
-            class="ico" style="background-position: 3px 0px;"></span></span> <input
-            class="conditionInput " id="" placeholder="搜索用户昵称、备注"> <span
-            class="magnifier"></span> <span class="clearInput " style="left:471px;"></span>
+          <div class="fl">
+            <span class="condition  ">
+              <span class="sourcevalue">所有来源</span>
+              <span class="ico" ></span>
+            </span>
+            <span class="condition">
+              <span class="techvalue">所有技能组</span>
+              <span class="ico"></span>
+            </span>
+            <input class="conditionInput " id="" placeholder="搜索用户昵称、备注">
+            <span class="magnifier"></span>
+            <span class="clearInput " style="left:471px;"></span>
             <ul id="origin" class="source-inner  " style="display: none;">
-              <li class="hover  "><span class="checkBox"></span><span
-                class="inner">全部</span></li>
-              <li class="hover  "><span class="checkBox"></span><span
-                class="inner">桌面网站</span></li>
-              <li class="hover  "><span class="checkBox"></span><span class="inner">微信</span>
-              </li>
-              <li class="hover  "><span class="checkBox"></span><span class="inner">App</span>
-              </li>
-              <li class="hover  "><span class="checkBox"></span><span class="inner">微博</span>
-              </li>
-              <li class="hover  "><span class="checkBox"></span><span
-                class="inner">移动网站</span></li>
-              <li class="sourceBtnGroup "><span class="sureBtn ">确定</span><span
-                class="cancelBtn ">取消</span></li>
+              <li class="hover  "><span class="checkBox"></span><span class="inner">全部</span></li>
+              <li class="hover  "><span class="checkBox"></span><span class="inner">桌面网站</span></li>
+              <li class="hover"><span class="checkBox"></span><span class="inner">微信</span></li>
+              <li class="hover"><span class="checkBox"></span><span class="inner">App</span></li>
+              <li class="hover"><span class="checkBox"></span><span class="inner">微博</span></li>
+              <li class="hover"><span class="checkBox"></span><span class="inner">移动网站</span></li>
+              <li class="sourceBtnGroup "><span class="sureBtn ">确定</span><span class="cancelBtn ">取消</span></li>
             </ul>
             <ul id="technology" class="technology-inner   zc-scroll" style="display: none;">
-              <li class="hover  "><span class="checkBox"></span><span
-                class="inner">全部</span></li>
-              <li class="technoBtnGroup "><span class="sureBtn ">确定</span><span
-                class="cancelBtn ">取消</span></li>
+              <li class="hover  "><span class="checkBox"></span><span class="inner">全部</span></li>
+              <li class="technoBtnGroup "><span class="sureBtn ">确定</span><span class="cancelBtn ">取消</span></li>
             </ul>
           </div>
-          <div class="fr"><span class="reqRefNow">刷新于<span>11:51:32</span></span><a
-            class="reaRefBtn " href="javascript:;"><span class="refresh"></span>刷新</a></div>
+          <div class="fr">
+            <span class="reqRefNow">
+              刷新于
+              <span>11:51:32</span>
+            </span>
+            <a class="reaRefBtn " href="javascript:void(0);"><span class="refresh"></span>刷新</a>
+          </div>
           <div style="clear:both"></div>
         </div>
-        <div class="queueTableWrapper" v-show="userQueue.item ? userQueue.item.length !==0 : false">
+        <div class="queueTableWrapper" v-show="userQueueLength!==0">
           <table class="reqTableTh queueTable">
             <thead>
             <tr>
@@ -50,12 +52,12 @@
               <th class="th3">来源</th>
               <th class="thGroup th4">技能组</th>
               <th class="th5">用户备注</th>
-              <th class="th6  ">等待时长<span class="sort " style="background-position: -393px 0px;"></span></th>
+              <th class="th6  ">等待时长<span class="sort " style="background-position: -393px 0;"></span></th>
               <th class="th7">操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-if="userQueue.item" v-for="(item,index) in userQueue.item">
+            <tr v-for="(item, index) in userQueue.item">
               <td>{{item.name}}</td>
               <td>{{item.from}}</td>
               <td>{{item.skill}}</td>
@@ -63,7 +65,7 @@
               <td>{{item.waitTime}}</td>
               <td>
                 <button class="invitation" type="button" @click="addUser(index)">邀请</button>
-                <button class="refuse" type="button" @click="removeUser(index)">拒绝</button>
+                <button class="refuse" type="button" @click="removeQueueUser(index)">拒绝</button>
               </td>
             </tr>
             </tbody>
@@ -71,7 +73,7 @@
         </div>
         <div>
           <div class=" table-outer zc-scroll">
-            <div class="noUser" v-if="userQueue.item ? userQueue.item.length===0 : true"><p>暂无用户</p></div>
+            <div class="noUser" v-if="userQueueLength===0"><p>暂无用户</p></div>
             <table class="table table-bottomless ls-animated-table queueTable">
               <tbody class="reqDomBox"></tbody>
             </table>
@@ -80,7 +82,8 @@
           <div class="reqBottom clear spec">
             <div class="fl"><p style="float:left"> 显示 <span class="countPage ">7</span>/<span
               class="allCountPage -page">1</span> 页 </p>
-              <p style="float:left;margin-left:8px;"> 总共 <span class="countSize ">{{userQueue.item?userQueue.item.length :0}}</span> 条 </p></div>
+              <p style="float:left;margin-left:8px;"> 总共 <span
+                class="countSize ">{{userQueueLength}}</span> 条 </p></div>
             <div class="fr">
               <!--<a class="reqFirstBtn" href="javascript:;">首页 </a> <span class="allCountPageBox hide">                         <a class="goCountPage" href="javascript:;">0</a></span> -->
               <a class="reaPrevBtn " href="#">&lt;上一页</a>
@@ -97,9 +100,42 @@
 
 <script>
   export default {
+    data () {
+      return {
+        userQueueDef: {
+          'ERR': true,
+          'item': [
+            {
+              'name': '',
+              'from': '',
+              'skill': '',
+              'note': '',
+              'waitTime': '',
+              'noread': '',
+              'online': '',
+              'star': '',
+              'blacklist': '',
+              'chat': []
+            }
+          ]
+        }
+
+      }
+    },
     computed: {
+      hasData () {
+        return this.$store.state.userQueue.ERR === false;
+      },
       userQueue () {
-        return this.$store.state.userQueue
+        if (this.hasData) {
+          return this.$store.state.userQueue
+        } else {
+          return this.userQueueDef
+        }
+
+      },
+      userQueueLength () {
+        return this.hasData ? this.userQueue.item.length : 0;
       }
     },
     methods: {
@@ -107,9 +143,9 @@
       addUser (index) {
         this.$store.commit('addUser', {index})
       },
-      // 删除队列中到用户
-      removeUser (index) {
-        this.$store.commit('removeUser', {index})
+      // 删除队列中的用户
+      removeQueueUser (index) {
+        this.$store.commit('removeQueueUser', {index})
       }
     }
   }
@@ -160,10 +196,8 @@
           width: 128px;
           height: 33px;
           transition: all 400ms linear;
-          border-left: 1px solid #eff5f5;
-          border-right: 1px solid #eff5f5;
-          border-top: 3px solid #eff5f5;
-          border-bottom: 1px solid #eff5f5;
+          border: 1px solid #eff5f5;
+          border-top-width: 3px;
           text-align: center;
           line-height: 33px;
           font-size: 14px;

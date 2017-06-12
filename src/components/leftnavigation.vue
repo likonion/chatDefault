@@ -56,7 +56,7 @@
               <div class="funIco">
                 <i class="starUser" v-show="item.star"></i>
               </div>
-              <i class="user-del ">
+              <i class="user-del " @click="removeUser(index)">
                 <span class="newIcon"></span>
               </i>
             </div>
@@ -76,9 +76,9 @@
               <div class="unameWidely"><span class="uname "> {{item.name}}</span></div>
               <span class="chat-detail" :class="{orange:item.noread} "  v-if="item.chat.length!==0">{{item.chat[item.chat.length - 1].txt}}</span>
               <div class="funIco">
-                <i class="starUser" v-show="item.star"></i>
+                <i class="starUser" v-if="item.star"></i>
               </div>
-              <i class="user-del ">
+              <i class="user-del "  @click="removeUser(index)">
                 <span class="newIcon"></span>
               </i>
             </div>
@@ -120,7 +120,7 @@
                   <i class="startopIcon  hidestartopIcon"></i>
                   <span class="status "></span>
                 </div>
-                <i class="user-del ">
+                <i class="user-del " @click="removeUser(index)">
                   <span class="newIcon"></span>
                 </i>
               </div>
@@ -164,6 +164,9 @@
 
     },
     methods: {
+      removeUser (index) {
+        this.$store.commit('removeUser',{index})
+      },
       setUserState (index) {
         // 设置用户状态
         this.$store.commit('setUserState',{index})

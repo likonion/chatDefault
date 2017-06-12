@@ -9,10 +9,10 @@
     </ul>
     <ul class="tabcontent">
       <li v-show="tabIndex === 1">
-        <div class="nullcon" v-show="user.acctiveUserIndex?user.acctiveUserIndex === null:true">
+        <div class="nullcon" v-show="!user.item || user.acctiveUserIndex === null ">
           <i class=" tab-profilebg"></i>
         </div>
-        <div v-if="user.acctiveUserIndex?user.acctiveUserIndex !== null:false">
+        <div v-if="user.item  && user.acctiveUserIndex !== null">
           <dl>
             <dt>访问信息</dt>
             <dd><span>访问来源：</span>--</dd>
