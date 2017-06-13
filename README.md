@@ -1,5 +1,5 @@
 
-##技术栈
+## 技术栈
 vue2 + vuex + vue-router + webpack + ES6/7 + mockjs + sass 
 ## 项目运行
 
