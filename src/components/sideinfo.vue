@@ -15,23 +15,20 @@
         <div v-if="user.item  && user.acctiveUserIndex !== null">
           <dl>
             <dt>访问信息</dt>
-            <dd><span>访问来源：</span>--</dd>
-            <dd><span>访问着陆页：</span>--</dd>
-            <dd><span>对话发起页：</span>--</dd>
-            <dd><span>接入渠道：</span>桌面网站</dd>
-            <dd><span>技能组：</span>--</dd>
-            <dd><span>排队时长：</span>--</dd>
-            <dd><span>IP地址：</span> 218.5.55.5</dd>
-            <dd><span>终端：</span> Google Chrome</dd>
-            <dd><span>系 统：</span> 未知</dd>
+            <dd><span>访问来源：</span>{{currentUser.from}}</dd>
+            <dd><span>技能组：</span>{{currentUser.skill}}</dd>
+            <dd><span>排队时长：</span>{{currentUser.waitTime}}</dd>
+            <dd><span>IP地址：</span> {{currentUser.ipAddress}}</dd>
+            <dd><span>终端：</span> {{currentUser.browser}}</dd>
+            <dd><span>系 统：</span> {{currentUser.system}}</dd>
             <dt>用户信息</dt>
-            <dd><span>昵称：</span><input type="text">
+            <dd><span>昵称：</span><input type="text" :value="currentUser.nickName">
             </dd>
-            <dd><span>姓名：</span><input type="text" v-if="user.item !== undefined" v-model="user.item[user.acctiveUserIndex].name"></dd>
-            <dd><span>来源：</span>桌面网站</dd>
-            <dd><span>电话：</span><input type="text" value="-"></dd>
+            <dd><span>姓名：</span><input type="text" v-if="user.item !== undefined" :value="currentUser.name"></dd>
+            <dd><span>来源：</span>{{currentUser.from}}</dd>
+            <dd><span>电话：</span><input type="text" :value="currentUser.mobile"></dd>
           </dl>
-          <p class="saveCustomerInfo js-saveCustomerInfo">保存客户信息</p>
+          <p class="saveCustomerInfo js-saveCustomerInfo" @click="saveUserInfo(currentUser.nickName,currentUser.name,currentUser.mobile)">保存客户信息</p>
         </div>
       </li>
       <li v-show="tabIndex === 2">快捷回复</li>
@@ -52,13 +49,17 @@
       user() {
         return this.$store.state.user
       },
-      test() {
-          return this.user.item.length
+      currentUser () {
+          return this.user.item[this.user.acctiveUserIndex]
       }
     },
     methods: {
       sideTab (e) {
         this.tabIndex = e
+      },
+      saveUserInfo (nickname,name,mobile) {
+          console.log(nickname)
+//          this.$store.commit('saveUserInfo',{})
       }
     }
   }

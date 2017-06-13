@@ -1,8 +1,7 @@
-# chat-demo
 
-> A Vue.js project
-
-## Build Setup
+##技术栈
+vue2 + vuex + vue-router + webpack + ES6/7 + mockjs + sass 
+## 项目运行
 
 ``` bash
 # install dependencies
@@ -20,4 +19,4 @@ npm run build --report
 ## 界面
 ![Alt text](./static/default.png)
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
