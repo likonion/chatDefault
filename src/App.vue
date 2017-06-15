@@ -36,23 +36,24 @@
           <div class="scrollBoxParent" id="scrollBoxParent">
 
             <div class="scrollBox">
-              <div class="systeamTextBox js-zc-loadmore"><p class="systeamText loadmore">点击加载更多</p></div>
-              <div class="day_divider">
-                <p class="systeamText" style="background-color: transparent">
-                  <span class="zc-c-chat-date-line-left"></span>
-                  <span class="zc-c-chat-date-line-text">2017-05-16</span>
-                  <span class="zc-c-chat-date-line-right"></span>
-                </p>
-              </div>
-              <div class="systeamTextBox"><p class="systeamText">用户转人工服务 12:41:40</p></div>
+
               <transition-group name="list" tag="div">
-                <div v-if="user.item[user.acctiveUserIndex].chat!==0" v-for="msg in user.item[user.acctiveUserIndex].chat" v-bind:key="msg">
+                <div v-if="AcctiveUserChat!==0" v-for="(msg,index) in AcctiveUserChat" v-bind:key="msg.id">
+                  <div class="systeamTextBox js-zc-loadmore" v-if="index === 0" @click="getMoreMsg"><p class="systeamText loadmore">点击加载更多</p></div>
+                  <div class="systeamTextBox"><p class="systeamText"  v-if="index === 0">用户转人工服务 12:41:40</p></div>
+                  <div class="day_divider" v-if="showDate(index)">
+                    <p class="systeamText" style="background-color: transparent">
+                      <span class="zc-c-chat-date-line-left"></span>
+                      <span class="zc-c-chat-date-line-text">{{msg.date + msg.day}}</span>
+                      <span class="zc-c-chat-date-line-right"></span>
+                    </p>
+                  </div>
                   <div class="msg userCus clearfix" v-if="msg.type==='oneself'">
                     <div class="msg_user fl">
                       <img src="./assets/img/pcType.png" class="msg_user_img">
                     </div>
                     <div class="msgContBox fl">
-                      <span class="msg_time ml">{{user.item[user.acctiveUserIndex].name}}</span>
+                      <span class="msg_time ml">{{AcctiveUser.name}}</span>
                       <span class="msg_time" style="margin-left: 0px;">{{msg.time}}</span>
                       <div style="clear:both;"></div>
                       <div class="msgBg fl" style="display: inline-flex;margin: 0px;max-width: 100%">
@@ -111,7 +112,6 @@ import VueAxios from 'vue-axios'
 import leftnavigation from './components/leftnavigation.vue'
 import sideinfo from './components/sideinfo.vue'
 
-
 export default {
   data() {
     return {
@@ -119,13 +119,29 @@ export default {
       msgTxt: ''
     }
   },
-  created()
-  {
+  created() {
     this.$store.commit('getData')
   },
   computed: {
     user() {
       return this.$store.state.user
+    },
+    AcctiveUser () {
+      return this.user.item[this.user.acctiveUserIndex]
+    },
+    loadMsgLength () {
+        return this.$store.state.loadMsgLength
+    },
+    AcctiveUserChat () {
+      return this.AcctiveUser.chat
+        // 按日期排序
+        .sort(function (a, b) {
+          return a.day > b.day ? 1 : -1;
+        })
+        // 显示最新的十条信息
+        .slice(-this.loadMsgLength)
+
+
     }
   },
   components: {
@@ -160,6 +176,16 @@ export default {
     },
     openDialog (model) {
       this.$store.commit('dialogSwitch', {model});
+    },
+    // 判断同一天信息只显示一个日期
+    showDate (index) {
+      if (index === 0)  return true
+      // 渲染信息时，判断当前信息如果与前一条信息时间是否相同
+      return this.AcctiveUserChat[index].day === this.AcctiveUserChat[index - 1].day ? false : true
+    },
+    // 点击加载更多
+    getMoreMsg () {
+      this.$store.commit('setLoadImgLength')
     }
   }
 }

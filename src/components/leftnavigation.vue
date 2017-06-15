@@ -46,7 +46,7 @@
           <li class="user-list-item online" :class="{'active':index===user.acctiveUserIndex}" v-for="(item,index) in userItem"
               v-if="item.online"
               @click="setCurrentMsg(index)">
-            <i class="icon laptop  ">
+            <i class="icon laptop  " v-bind:style="{backgroundColor:item.headColor}">
               <span class="badge badge-red " v-if="item.noread!=0"
                     style="padding: 2px 5px; visibility: visible;">{{item.noread}}</span>
             </i>
@@ -190,6 +190,7 @@
 
         this.$store.commit('acctiveUser', {index})
         this.$store.commit('clearNoread', {index})
+        this.$store.commit('resetLoadImgLength')
         this.$nextTick(function () {
           // v-for渲染已经完成
           let scrollBoxParent = document.getElementById('scrollBoxParent')

@@ -1,25 +1,26 @@
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import data from '../mock/mock'
+import Mock from 'mockjs'
 
 export const state = {
   user: Object,
   userQueue: Object,
   dialog: {'show': false, 'title': '', 'model': ''},
+  loadMsgLength: 10
 };
 export const mutations = {
   getData (state) {
     // 使用axios获取json数据
-    // axios.get('static/data.json').then(function (resolve) {
-    //   state.user = resolve.data.user // 获取用户信息
-    //   state.userQueue = resolve.data.userQueue // 获取队列信息
-    // }).catch((err) => {
-    //   console.log(err);
-    // })
+    axios.get('static/data.json').then(function (resolve) {
+      state.user = resolve.data.user // 获取用户信息
+      state.userQueue = resolve.data.userQueue // 获取队列信息
+    }).catch((err) => {
+      console.log(err)
+    })
+    // mockjs拦截data.json请求，返回mock数据
+    Mock.mock('static/data.json', data)
 
-    // 使用mockjs数据
-    state.user = data.user; // 获取用户信息
-    state.userQueue = data.userQueue // 获取队列信息
 
     // 使用接口
     // axios.get('/api/user').then(function (resolve) {
@@ -53,8 +54,16 @@ export const mutations = {
   // 发送消息
   sendMsg (state, {msg}){
     let date = new Date();
-    let newMsg = {'type': 'service', 'date': date.toLocaleDateString(), 'time': date.toLocaleTimeString(), 'txt': msg};
+    let newMsg = {'type': 'service', 'date': '2017-06-','day':9,'id':state.user.item[state.user.acctiveUserIndex].chat.length+1, 'time': date.toLocaleTimeString(), 'txt': msg};
     state.user.item[state.user.acctiveUserIndex].chat.push(newMsg)
+  },
+  // 加载更多信息复位
+  resetLoadImgLength (state) {
+    state.loadMsgLength = 10
+  },
+  // 加载更多信息
+  setLoadImgLength (state) {
+    state.loadMsgLength += 10
   },
   // 弹窗开关
   dialogSwitch (state, {model}) {

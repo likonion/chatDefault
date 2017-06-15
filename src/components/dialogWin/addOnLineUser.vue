@@ -141,6 +141,7 @@
     methods: {
       // 添加队列中的用户到当前会话
       addUser (index) {
+        this.$store.commit('resetLoadImgLength')
         this.$store.commit('addUser', {index})
       },
       // 删除队列中的用户
