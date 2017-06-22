@@ -1,33 +1,7 @@
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-import data from '../mock/mock'
-import Mock from 'mockjs'
-
-export const state = {
-  user: Object,
-  userQueue: Object,
-  dialog: {'show': false, 'title': '', 'model': ''},
-  loadMsgLength: 10
-};
-export const mutations = {
-  getData (state) {
-    // 使用axios获取json数据
-    axios.get('static/data.json').then(function (resolve) {
-      state.user = resolve.data.user // 获取用户信息
-      state.userQueue = resolve.data.userQueue // 获取队列信息
-    }).catch((err) => {
-      console.log(err)
-    })
-    // mockjs拦截data.json请求，返回mock数据
-    Mock.mock('static/data.json', data)
-
-
-    // 使用接口
-    // axios.get('/api/user').then(function (resolve) {
-    //   state.user = resolve.data.data
-    // }).catch( (err) => {
-    //   console.log(err);
-    // })
+export default {
+  getSuccess(state,{resolve}) {
+    state.user = resolve.data.user // 设置用户信息
+    state.userQueue = resolve.data.userQueue // 设置队列信息
   },
   setUserState (state, {index}) { // 设置用户状态
     if (index === 1) {
@@ -63,7 +37,12 @@ export const mutations = {
   },
   // 加载更多信息
   setLoadImgLength (state) {
-    state.loadMsgLength += 10
+    if (state.loadMsgLength + 10 >= state.user.item[state.user.acctiveUserIndex].chat.length) {
+      state.loadMsgLength = state.user.item[state.user.acctiveUserIndex].chat.length
+    } else {
+      state.loadMsgLength += 10
+    }
+
   },
   // 弹窗开关
   dialogSwitch (state, {model}) {

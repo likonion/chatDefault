@@ -8,7 +8,7 @@
         <span>在线客服</span>
         <span>www.demo.com</span>
       </div>
-      <i class="sortStyle" @click="openDialog('setting')"></i>
+      <i class="sortStyle" @click="openDialog( 'setting')"></i>
     </section>
     <section class="main-wrapper clearfix">
       <leftnavigation></leftnavigation>
@@ -39,8 +39,9 @@
 
               <transition-group name="list" tag="div">
                 <div v-if="AcctiveUserChat!==0" v-for="(msg,index) in AcctiveUserChat" v-bind:key="msg.id">
-                  <div class="systeamTextBox js-zc-loadmore" v-if="index === 0" @click="getMoreMsg"><p class="systeamText loadmore">点击加载更多</p></div>
-                  <div class="systeamTextBox"><p class="systeamText"  v-if="index === 0">用户转人工服务 12:41:40</p></div>
+                  <div class="systeamTextBox js-zc-loadmore" v-if="index === 0" @click="getMoreMsg"><p
+                    class="systeamText loadmore">点击加载更多</p></div>
+                  <div class="systeamTextBox"><p class="systeamText" v-if="index === 0">用户转人工服务 12:41:40</p></div>
                   <div class="day_divider" v-if="showDate(index)">
                     <p class="systeamText" style="background-color: transparent">
                       <span class="zc-c-chat-date-line-left"></span>
@@ -109,6 +110,7 @@
 <script> // todo script
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import {mapState, mapMutations} from 'vuex'
 import leftnavigation from './components/leftnavigation.vue'
 import sideinfo from './components/sideinfo.vue'
 
@@ -120,21 +122,23 @@ export default {
     }
   },
   created() {
-    this.$store.commit('getData')
+    this.$store.dispatch('getData')
   },
+//  computed: mapState([
+//    // 映射 this.count 为 store.state.count
+//    'user'
+//  ]),
   computed: {
-    user() {
-      return this.$store.state.user
-    },
+    ...mapState({
+      user: 'user',
+      loadMsgLength: 'loadMsgLength'
+    }),
     AcctiveUser () {
       return this.user.item[this.user.acctiveUserIndex]
     },
-    loadMsgLength () {
-        return this.$store.state.loadMsgLength
-    },
     AcctiveUserChat () {
       return this.AcctiveUser.chat
-        // 按日期排序
+      // 按日期排序
         .sort(function (a, b) {
           return a.day > b.day ? 1 : -1;
         })
@@ -149,12 +153,12 @@ export default {
     'sideinfo': sideinfo
   },
   methods: {
-    starToggle() { // 星标开关
-      this.$store.commit('starToggle')
-    },
-    blacklistToggle() {
-      this.$store.commit('blacklistToggle')
-    },
+    ...mapMutations({
+      starToggle: 'starToggle',
+      blacklistToggle: 'blacklistToggle',
+      // 点击加载更多
+      getMoreMsg: 'setLoadImgLength'
+    }),
     sendMsg(e) {
       if (e.ctrlKey) {
         this.msgTxt += '\n'
@@ -182,10 +186,6 @@ export default {
       if (index === 0)  return true
       // 渲染信息时，判断当前信息如果与前一条信息时间是否相同
       return this.AcctiveUserChat[index].day === this.AcctiveUserChat[index - 1].day ? false : true
-    },
-    // 点击加载更多
-    getMoreMsg () {
-      this.$store.commit('setLoadImgLength')
     }
   }
 }

@@ -106,7 +106,7 @@
           <ul class="history-list">
             <li class="user-list-item history" v-for="(item,index) in userItem" @click="setCurrentMsg(index)"
                 v-show="needShow(item.star, item.blacklist)">
-              <i class="icon laptop " :class="{offline:!item.online}">
+              <i class="icon laptop " :class="{offline:!item.online}" v-bind:style="{backgroundColor:item.headColor}">
                 <span class="badge badge-red " style="padding:2px 5px">1</span>
               </i>
               <div class="item-detail">

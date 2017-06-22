@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import { state, mutations } from './mutations'
-// import * as actions from './actions'
+import mutations from './mutations'
+import * as actions from './actions'
 // import plugins from './plugins'
 Vue.use(Vuex, axios, VueAxios)
 // const myPlugin = store => {
@@ -14,9 +14,15 @@ Vue.use(Vuex, axios, VueAxios)
 //     window.localStorage.setItem('menu', JSON.stringify(menu))
 //   })
 // }
+const state = {
+  user: Object,
+  userQueue: Object,
+  dialog: {'show': false, 'title': '', 'model': ''},
+  loadMsgLength: 10
+};
 export default new Vuex.Store({
   state,
-  mutations
+  mutations,
   // plugins: [myPlugin],
-  // actions
+  actions
 })
