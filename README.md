@@ -1,6 +1,8 @@
 
 ## 技术栈
 vue2 + vuex + vue-router + webpack + ES6/7 + mockjs + sass 
+## 界面
+![Alt text](./static/default.png)
 ## 项目运行
 
 ``` bash
@@ -16,7 +18,6 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-## 界面
-![Alt text](./static/default.png)
+
 
 
